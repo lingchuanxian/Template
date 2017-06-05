@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:id="@+id/empty_layout"
+             xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:app="http://schemas.android.com/apk/res-auto"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent">
+
+    <FrameLayout
+        android:id="@+id/rl_nonet_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:visibility="visible">
+
+        <TextView
+            android:id="@+id/tv_net_error"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableTop="@mipmap/ic_not_network"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textColor="#FF0000"
+            android:text="当前无网络连接"
+            android:textSize="14sp"/>
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/rl_empty_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:visibility="visible">
+
+        <TextView
+            android:id="@+id/tv_empty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableTop="@mipmap/ic_not_data"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textColor="#FF0000"
+            android:text="当前暂无数据"
+            android:textSize="14sp"/>
+    </FrameLayout>
+
+    <com.github.ybq.android.spinkit.SpinKitView
+        android:id="@+id/empty_loading"
+        android:visibility="gone"
+        android:padding="20dp"
+        style="@style/SpinKitView.Circle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        app:SpinKit_Color="#ff0000" />
+</FrameLayout>
