@@ -16,6 +16,6 @@ public class AppModule {
     }
     @Provides
     public Context getContext() {
-        return context;
+        return this.context;
     }
 }
