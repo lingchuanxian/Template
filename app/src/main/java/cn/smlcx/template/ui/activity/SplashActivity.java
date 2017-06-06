@@ -6,7 +6,6 @@ import android.widget.ImageView;
 import butterknife.BindView;
 import cn.smlcx.template.R;
 import cn.smlcx.template.base.BaseActivity;
-import cn.smlcx.template.base.BasePresenter;
 import cn.smlcx.template.utils.ImageLoader;
 import cn.smlcx.template.utils.ToActivityUtil;
 
@@ -30,8 +29,8 @@ public class SplashActivity extends BaseActivity {
 	}
 
 	@Override
-	protected BasePresenter initPresenter() {
-		return null;
+	protected void initPresenter() {
+
 	}
 
 	@Override
@@ -43,5 +42,10 @@ public class SplashActivity extends BaseActivity {
 				finish();
 			}
 		}, 3000);
+	}
+
+	@Override
+	protected void initInject() {
+
 	}
 }

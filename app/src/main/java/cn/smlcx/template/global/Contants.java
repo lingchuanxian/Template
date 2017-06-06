@@ -5,5 +5,5 @@ package cn.smlcx.template.global;
  */
 
 public class Contants {
-	public final static String IP = "";
+	public final static String IP = "http://v.juhe.cn";
 }

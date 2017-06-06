@@ -7,6 +7,8 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.smlcx.template.R;
@@ -22,11 +24,13 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
 	@Nullable
 	@BindView(R.id.empty_layout)
 	EmptyLayout mEmptyLayout;
-	protected P mPresenter;
-	public Context mContext;
 	@Nullable
 	@BindView(R.id.toolbar)
 	Toolbar mToolbar;
+
+	@Inject
+	protected P mPresenter;
+	public Context mContext;
 	private ToolBarSet mToolBarSet;
 
 	@Override
@@ -35,14 +39,15 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
 		setContentView(attachLayoutRes());
 		ButterKnife.bind(this);
 		init();
-		initViews();
-		mPresenter = initPresenter();
-		initData();
 	}
 
 	private void init() {
 		mContext = this;
 		mToolBarSet = new ToolBarSet(mToolbar,this);
+		initInject();
+		initViews();
+		initPresenter();
+		initData();
 	}
 
 	/**
@@ -61,12 +66,18 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
 	/**
 	 * 初始化presenter
 	 */
-	protected abstract P initPresenter();
+	protected abstract void initPresenter();
 
 	/**
 	 * 初始化数据
 	 */
 	protected abstract void initData();
+
+	/**
+	 * 初始化dagger2
+	 */
+	protected abstract void initInject();
+
 
 	public ToolBarSet getToolBar(){
 		if(mToolBarSet==null){

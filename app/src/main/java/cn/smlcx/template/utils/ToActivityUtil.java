@@ -29,7 +29,7 @@ public class ToActivityUtil {
                 PackageManager.MATCH_DEFAULT_ONLY);
         boolean isIntentSafe = activities.size() > 0;
 
-        // Start an activity if it's safe
+        // Start an activity if it'PresenterContract safe
         if (isIntentSafe) {
             packageContext.startActivity(action);
         }
