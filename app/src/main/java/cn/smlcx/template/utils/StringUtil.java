@@ -84,7 +84,6 @@ public class StringUtil {
 			prop.load(fis); 
 			return prop.getProperty(key);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return "";
 		}     

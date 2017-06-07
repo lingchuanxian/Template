@@ -1,11 +1,13 @@
 package cn.smlcx.template.base;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.widget.Toast;
 
 import javax.inject.Inject;
 
@@ -52,7 +54,6 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
 
 	/**
 	 * 绑定布局文件
-	 *
 	 * @return 布局文件ID
 	 */
 	@LayoutRes
@@ -78,7 +79,10 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
 	 */
 	protected abstract void initInject();
 
-
+	/**
+	 * 获取Toolbar对象
+	 * @return
+	 */
 	public ToolBarSet getToolBar(){
 		if(mToolBarSet==null){
 			mToolBarSet = new ToolBarSet(mToolbar,this);
@@ -86,13 +90,18 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
 		return mToolBarSet;
 	}
 
+	/**
+	 * 加载中
+	 */
 	@Override
 	public void showLoding() {
 		if (mEmptyLayout != null) {
 			mEmptyLayout.setEmptyStatus(EmptyLayout.STATUS_LOADING);
 		}
 	}
-
+	/**
+	 * 隐藏加载
+	 */
 	@Override
 	public void hideLoding() {
 		if (mEmptyLayout != null) {
@@ -100,13 +109,18 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
 		}
 	}
 
+	/**
+	 * 显示错误信息
+	 */
 	@Override
 	public void showErr(String err) {
 		if (mEmptyLayout != null) {
 			mEmptyLayout.setEmptyStatus(EmptyLayout.STATUS_NO_NET);
 		}
 	}
-
+	/**
+	 * 无数据
+	 */
 	@Override
 	public void showNonData(String msg) {
 		if (mEmptyLayout != null) {
@@ -128,10 +142,39 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
 	}
 	*/
 
+	/**
+	 * 页面跳转
+	 * @param clz
+	 */
+	protected void startActivity(Class<?> clz) {
+		startActivity(new Intent(BaseActivity.this,clz));
+	}
+
+	/**
+	 * 携带数据的页面跳转
+	 * @param clz
+	 * @param bundle
+	 */
+	protected void startActivity(Class<?> clz, Bundle bundle) {
+		Intent intent = new Intent();
+		intent.setClass(this, clz);
+		if (bundle != null) {
+			intent.putExtras(bundle);
+		}
+		startActivity(intent);
+	}
+
+	/**
+	 * 简化Toast
+	 * @param msg
+	 */
+	protected void showToast(String msg){
+		Toast.makeText(this,msg,Toast.LENGTH_SHORT).show();
+	}
+
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-
 	}
 
 }

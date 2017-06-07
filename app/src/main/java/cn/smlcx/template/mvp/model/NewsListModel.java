@@ -2,10 +2,10 @@ package cn.smlcx.template.mvp.model;
 
 import javax.inject.Inject;
 
-import cn.smlcx.template.api.ApiService;
-import cn.smlcx.template.api.RetrofitWrapper;
+import cn.smlcx.template.api.ApiEngine;
 import cn.smlcx.template.base.BaseModel;
 import cn.smlcx.template.bean.News;
+import cn.smlcx.template.bean.ResponseResult;
 import cn.smlcx.template.di.scope.ActivityScope;
 import rx.Observable;
 
@@ -14,20 +14,11 @@ import rx.Observable;
  */
 @ActivityScope
 public class NewsListModel implements BaseModel{
-	private ApiService mApiService;
 	@Inject
 	public NewsListModel() {
-		if(mApiService==null){
-			this.mApiService = RetrofitWrapper.getInstance().create(ApiService.class);
-		}
 	}
 
-	public Observable<News> getNewsListModel(int pno, int ps, String key, String dtype){
-		return mApiService.getNewsList(pno,ps,key,dtype);
-	}
-
-	@Override
-	public void onFailed(String error) {
-
+	public Observable<ResponseResult<News>> getNewsListModel(int pno, int ps, String key, String dtype){
+		return ApiEngine.getInstance().getApiService().getNewsList(pno,ps,key,dtype);
 	}
 }

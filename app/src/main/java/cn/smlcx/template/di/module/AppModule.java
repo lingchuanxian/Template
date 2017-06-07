@@ -2,6 +2,10 @@ package cn.smlcx.template.di.module;
 
 import android.content.Context;
 
+import javax.inject.Singleton;
+
+import cn.smlcx.template.api.ApiService;
+import cn.smlcx.template.api.RetrofitWrapper;
 import dagger.Module;
 import dagger.Provides;
 
@@ -11,11 +15,20 @@ import dagger.Provides;
 @Module
 public class AppModule {
     private Context context;
+
     public AppModule(Context context) {
         this.context = context;
     }
+
     @Provides
-    public Context getContext() {
-        return this.context;
+    @Singleton
+    Context provideApplicationContext() {
+        return context;
+    }
+
+    @Provides
+    @Singleton
+    public ApiService provideApiService() {
+        return RetrofitWrapper.getInstance().create(ApiService.class);
     }
 }

@@ -7,7 +7,6 @@ import butterknife.BindView;
 import cn.smlcx.template.R;
 import cn.smlcx.template.base.BaseActivity;
 import cn.smlcx.template.utils.ImageLoader;
-import cn.smlcx.template.utils.ToActivityUtil;
 
 /**
  * Created by lcx on 2017/6/5.
@@ -38,7 +37,7 @@ public class SplashActivity extends BaseActivity {
 		new Handler().postDelayed(new Runnable() {
 			@Override
 			public void run() {
-				ToActivityUtil.toNextActivity(mContext, HomeActivity.class);
+				startActivity(HomeActivity.class);
 				finish();
 			}
 		}, 3000);
@@ -46,6 +45,5 @@ public class SplashActivity extends BaseActivity {
 
 	@Override
 	protected void initInject() {
-
 	}
 }

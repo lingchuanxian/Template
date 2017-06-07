@@ -5,5 +5,4 @@ package cn.smlcx.template.base;
  */
 
 public interface BaseModel {
-	void onFailed(String error);
 }
