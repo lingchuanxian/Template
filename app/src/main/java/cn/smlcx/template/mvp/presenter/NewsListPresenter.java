@@ -5,8 +5,8 @@ import android.util.Log;
 import javax.inject.Inject;
 
 import cn.smlcx.template.base.BasePresenter;
+import cn.smlcx.template.bean.HttpResult;
 import cn.smlcx.template.bean.News;
-import cn.smlcx.template.bean.ResponseResult;
 import cn.smlcx.template.di.scope.ActivityScope;
 import cn.smlcx.template.mvp.model.NewsListModel;
 import cn.smlcx.template.mvp.view.ViewContract;
@@ -37,7 +37,7 @@ public class NewsListPresenter extends BasePresenter<NewsListModel,ViewContract.
 					}
 				})
 				.observeOn(AndroidSchedulers.mainThread())//最后在主线程中执行
-				.subscribe(new Subscriber<ResponseResult<News>>() {
+				.subscribe(new Subscriber<HttpResult<News>>() {
 					@Override
 					public void onCompleted() {
 					}
@@ -45,9 +45,9 @@ public class NewsListPresenter extends BasePresenter<NewsListModel,ViewContract.
 					public void onError(Throwable e) {
 					}
 					@Override
-					public void onNext(ResponseResult<News> result) {
+					public void onNext(HttpResult<News> result) {
 						Log.d(TAG, "onNext: "+result.getResult().getList().size());
 					}
-				});
+				});;
 	}
 }

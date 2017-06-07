@@ -4,8 +4,8 @@ import android.content.Context;
 
 import javax.inject.Singleton;
 
+import cn.smlcx.template.api.ApiEngine;
 import cn.smlcx.template.api.ApiService;
-import cn.smlcx.template.api.RetrofitWrapper;
 import dagger.Module;
 import dagger.Provides;
 
@@ -29,6 +29,6 @@ public class AppModule {
     @Provides
     @Singleton
     public ApiService provideApiService() {
-        return RetrofitWrapper.getInstance().create(ApiService.class);
+        return ApiEngine.getInstance().getApiService();
     }
 }

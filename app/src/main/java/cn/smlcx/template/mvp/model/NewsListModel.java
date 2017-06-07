@@ -4,8 +4,8 @@ import javax.inject.Inject;
 
 import cn.smlcx.template.api.ApiEngine;
 import cn.smlcx.template.base.BaseModel;
+import cn.smlcx.template.bean.HttpResult;
 import cn.smlcx.template.bean.News;
-import cn.smlcx.template.bean.ResponseResult;
 import cn.smlcx.template.di.scope.ActivityScope;
 import rx.Observable;
 
@@ -18,7 +18,8 @@ public class NewsListModel implements BaseModel{
 	public NewsListModel() {
 	}
 
-	public Observable<ResponseResult<News>> getNewsListModel(int pno, int ps, String key, String dtype){
+	public Observable<HttpResult<News>> getNewsListModel(int pno, int ps, String key, String dtype){
 		return ApiEngine.getInstance().getApiService().getNewsList(pno,ps,key,dtype);
+				//.compose(RxHelper.<HttpResult<News>>handleResult());
 	}
 }
