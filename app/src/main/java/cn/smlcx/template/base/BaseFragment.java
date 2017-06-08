@@ -9,7 +9,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -27,15 +26,12 @@ public abstract class BaseFragment<P extends BasePresenter> extends Fragment imp
 	protected P mPresenter;
 	public Context mContext;
 	public View view;
-	@BindView(R.id.toolbar)
-	Toolbar mToolbar;
-	@BindView(R.id.layout)
-	RelativeLayout mLayout;
+
+	private Toolbar mToolbar;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 		view = inflater.inflate(R.layout.base_layout, container, false);
-		inflater.inflate(attachLayoutRes(),mLayout,false);
 		ButterKnife.bind(getActivity());
 		init();
 		initViews();

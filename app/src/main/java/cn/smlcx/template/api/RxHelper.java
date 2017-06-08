@@ -27,9 +27,9 @@ public class RxHelper {
 				return tObservable.flatMap(new Func1<HttpResult<T>, Observable<T>>() {
 					@Override
 					public Observable<T> call(HttpResult<T> result) {
-						Log.e("code",result.getError_code()+"");
+						Log.d("code", "call: "+result.getError_code());
 						if (result.getError_code() == 0) {
-							return createData(result.getResult().getList().get(0));
+							return createData(result.getData());
 						} else {
 							return Observable.error(new ApiException(result.getError_code()));
 						}

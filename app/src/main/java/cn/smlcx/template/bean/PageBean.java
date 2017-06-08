@@ -46,4 +46,14 @@ public class PageBean<T> {
 
 	public PageBean() {
 	}
+
+	@Override
+	public String toString() {
+		return "PageBean{" +
+				"totalPage=" + totalPage +
+				", ps=" + ps +
+				", pno=" + pno +
+				", list=" + list +
+				'}';
+	}
 }
