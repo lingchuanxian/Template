@@ -7,7 +7,7 @@ package cn.smlcx.template.bean;
 public class HttpResult<T> {
 	private int error_code;
 	private String reason;
-	private T data;
+	private T result;
 
 	public int getError_code() {
 		return error_code;
@@ -15,14 +15,6 @@ public class HttpResult<T> {
 
 	public void setError_code(int error_code) {
 		this.error_code = error_code;
-	}
-
-	public T getData() {
-		return data;
-	}
-
-	public void setData(T data) {
-		this.data = data;
 	}
 
 	public String getReason() {
@@ -33,6 +25,15 @@ public class HttpResult<T> {
 		this.reason = reason;
 	}
 
-	public HttpResult() {
+	public T getResult() {
+		return result;
+	}
+
+	public void setResult(T result) {
+		this.result = result;
+	}
+
+	public HttpResult(int error_code) {
+		this.error_code = error_code;
 	}
 }

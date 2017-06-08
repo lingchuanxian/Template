@@ -176,7 +176,8 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
 	 * 页面跳转
 	 * @param clz
 	 */
-	protected void startActivity(Class<?> clz) {
+	@Override
+	public void startActivity(Class<?> clz) {
 		startActivity(new Intent(BaseActivity.this,clz));
 	}
 
@@ -185,7 +186,8 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
 	 * @param clz
 	 * @param bundle
 	 */
-	protected void startActivity(Class<?> clz, Bundle bundle) {
+	@Override
+	public void startActivity(Class<?> clz, Bundle bundle) {
 		Intent intent = new Intent();
 		intent.setClass(this, clz);
 		if (bundle != null) {
@@ -198,7 +200,8 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
 	 * 简化Toast
 	 * @param msg
 	 */
-	protected void showToast(String msg){
+	@Override
+	public void showToast(String msg){
 		Toast.makeText(this,msg,Toast.LENGTH_SHORT).show();
 	}
 

@@ -1,7 +1,5 @@
 package cn.smlcx.template.mvp.presenter;
 
-import android.util.Log;
-
 import javax.inject.Inject;
 
 import cn.smlcx.template.base.BasePresenter;
@@ -35,12 +33,12 @@ public class NewsListPresenter extends BasePresenter<NewsListModel,ViewContract.
 
 					@Override
 					public void onError(Throwable e) {
-						Log.d(TAG, "onError: "+e.getMessage());
+						mView.fail(e.getMessage());
 					}
 
 					@Override
 					public void onNext(PageBean<News> result) {
-						Log.d(TAG, "onNext: "+result.toString());
+						mView.success(result.getList());
 					}
 				});
 		addSubscribe(subscribe);

@@ -7,11 +7,21 @@
     android:layout_height="match_parent"
     android:background="#ffffff">
 
-    <TextView
+    <cn.smlcx.template.widget.EmptyLayout
+        android:id="@+id/empty_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Hello World!"
-        android:gravity="center"
-        android:textColor="#FF0000"/>
+        android:layout_height="match_parent"/>
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swiperefresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rlv_news"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
 
 </RelativeLayout>

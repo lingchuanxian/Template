@@ -47,6 +47,13 @@ public class PageBean<T> {
 	public PageBean() {
 	}
 
+	public PageBean(int totalPage, int ps, int pno, List<T> list) {
+		this.totalPage = totalPage;
+		this.ps = ps;
+		this.pno = pno;
+		this.list = list;
+	}
+
 	@Override
 	public String toString() {
 		return "PageBean{" +

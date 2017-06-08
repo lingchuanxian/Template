@@ -29,7 +29,7 @@ public class RxHelper {
 					public Observable<T> call(HttpResult<T> result) {
 						Log.d("code", "call: "+result.getError_code());
 						if (result.getError_code() == 0) {
-							return createData(result.getData());
+							return createData(result.getResult());
 						} else {
 							return Observable.error(new ApiException(result.getError_code()));
 						}
