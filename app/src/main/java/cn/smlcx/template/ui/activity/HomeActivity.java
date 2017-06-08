@@ -1,7 +1,6 @@
 package cn.smlcx.template.ui.activity;
 
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -38,7 +37,6 @@ public class HomeActivity extends BaseActivity<NewsListPresenter> implements Vie
 	protected void initViews() {
 		getToolBar().setTitle("首页")
 				.setDisplayHomeAsUpEnabled(false);
-		initRecycleView();
 		mAdapter = new NewsListAdapter(mDatas);
 		mRlvNews.setAdapter(mAdapter);
 	}
@@ -72,11 +70,5 @@ public class HomeActivity extends BaseActivity<NewsListPresenter> implements Vie
 	@Override
 	public void fail(String msg) {
 		showErr(msg);
-	}
-
-	private void initRecycleView() {
-		final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-		mRlvNews.setLayoutManager(linearLayoutManager);
-
 	}
 }
