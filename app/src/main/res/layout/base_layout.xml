@@ -8,11 +8,9 @@
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
-        app:titleTextColor="#ffffff"
-        android:fitsSystemWindows="true"
-        android:clipToPadding="true"/>
+        app:theme="@style/ToolbarTheme"/>
 
     <FrameLayout
         android:id="@+id/container"

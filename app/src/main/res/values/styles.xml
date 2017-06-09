@@ -19,4 +19,12 @@
     <style name="progress_dialog" parent="@android:style/Theme.Dialog">
     </style>
 
+    <!-- toolbar菜单样式 -->
+    <style name="ToolbarTheme" parent="@style/ThemeOverlay.AppCompat.ActionBar">
+        <item name="actionMenuTextColor">@android:color/black</item>
+        <!--toolbar标题文字颜色-->
+        <item name="android:textColorPrimary">@android:color/white</item>
+        <item name="android:textColorSecondary">#ffffff</item>
+    </style>
+
 </resources>

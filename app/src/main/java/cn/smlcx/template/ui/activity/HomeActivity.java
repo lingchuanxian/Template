@@ -1,7 +1,15 @@
 package cn.smlcx.template.ui.activity;
 
+import android.content.Intent;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.Toast;
+
+import com.chad.library.adapter.base.BaseQuickAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,10 +43,37 @@ public class HomeActivity extends BaseActivity<NewsListPresenter> implements Vie
 
 	@Override
 	protected void initViews() {
-		getToolBar().setTitle("首页")
-				.setDisplayHomeAsUpEnabled(false);
+		getToolBar().setTitle("新闻头条")
+				.setDisplayHomeAsUpEnabled(false)
+				.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+					@Override
+					public boolean onMenuItemClick(MenuItem item) {
+						String msg = "";
+						switch (item.getItemId()) {
+							case R.id.action_create:
+								msg += "Click create";
+								break;
+							case R.id.action_add:
+								msg += "Click add";
+								break;
+						}
+						if(!msg.equals("")) {
+							Toast.makeText(HomeActivity.this, msg, Toast.LENGTH_SHORT).show();
+						}
+						return false;
+					}
+				});
 		mAdapter = new NewsListAdapter(mDatas);
 		mRlvNews.setAdapter(mAdapter);
+		mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+			@Override
+			public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+				Intent intent = new Intent(HomeActivity.this,NewsDetailActivity.class);
+				intent.putExtra("url",mDatas.get(position).getUrl());
+				intent.putExtra("title",mDatas.get(position).getTitle());
+				startActivity(intent);
+			}
+		});
 	}
 
 	@Override
@@ -64,5 +99,12 @@ public class HomeActivity extends BaseActivity<NewsListPresenter> implements Vie
 	@Override
 	public void fail(String msg) {
 		showErr(msg);
+	}
+
+	/** 创建菜单 */
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.menu_main,menu);
+		return true;
 	}
 }
