@@ -43,7 +43,7 @@ public class HomeActivity extends BaseActivity<NewsListPresenter> implements Vie
 
 	@Override
 	protected void initViews() {
-		getToolBar().setTitle("新闻头条")
+		getToolBar().setTitle("微信精选")
 				.setDisplayHomeAsUpEnabled(false)
 				.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
 					@Override
