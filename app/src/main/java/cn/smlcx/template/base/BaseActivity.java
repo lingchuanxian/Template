@@ -2,7 +2,6 @@ package cn.smlcx.template.base;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
@@ -10,7 +9,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
@@ -19,10 +17,8 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.smlcx.template.R;
-import cn.smlcx.template.widget.ActivityLifeCycleEvent;
 import cn.smlcx.template.widget.EmptyLayout;
 import cn.smlcx.template.widget.ToolBarSet;
-import rx.subjects.PublishSubject;
 
 
 /**
@@ -41,14 +37,11 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
 	public Context mContext;
 	private ToolBarSet mToolBarSet;
 
-	public final PublishSubject<ActivityLifeCycleEvent> lifecycleSubject = PublishSubject.create();
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(attachLayoutRes());
 		ButterKnife.bind(this);
-		lifecycleSubject.onNext(ActivityLifeCycleEvent.CREATE);
 		init();
 	}
 
@@ -71,15 +64,14 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
 		mToolBarSet = new ToolBarSet(mToolbar,this);
 		initInject();
 		initViews();
-		initPresenter();
 		initData();
-		//当系统版本为4.4或者4.4以上时可以使用沉浸式状态栏
+		/*//当系统版本为4.4或者4.4以上时可以使用沉浸式状态栏
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
 			//透明状态栏
 			getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
 			//透明导航栏
 			getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-		}
+		}*/
 	}
 
 	/**
@@ -93,11 +85,6 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
 	 * 初始化视图控件
 	 */
 	protected abstract void initViews();
-
-	/**
-	 * 初始化presenter
-	 */
-	protected abstract void initPresenter();
 
 	/**
 	 * 初始化数据
@@ -208,20 +195,25 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
 
 	@Override
 	protected void onPause() {
-		lifecycleSubject.onNext(ActivityLifeCycleEvent.PAUSE);
 		super.onPause();
 	}
 
 	@Override
 	protected void onStop() {
-		lifecycleSubject.onNext(ActivityLifeCycleEvent.STOP);
 		super.onStop();
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
 	}
 
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-		lifecycleSubject.onNext(ActivityLifeCycleEvent.DESTROY);
+		if (mPresenter!=null){
+			mPresenter.unSubscribe();
+		}
 	}
 
 }

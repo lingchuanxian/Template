@@ -1,6 +1,7 @@
 package cn.smlcx.template.mvp.model;
 
 import cn.smlcx.template.api.ApiEngine;
+import cn.smlcx.template.api.RetryWithDelay;
 import cn.smlcx.template.api.RxHelper;
 import cn.smlcx.template.base.BaseModel;
 import cn.smlcx.template.bean.News;
@@ -16,6 +17,7 @@ public class NewsListModel implements BaseModel{
 
 	public Observable<PageBean<News>> getNewsListModel(int pno, int ps, String key, String dtype){
 		return ApiEngine.getInstance().getApiService().getNewsList(pno,ps,key,dtype)
-				.compose(RxHelper.<PageBean<News>>handleResult());
+				.compose(RxHelper.<PageBean<News>>handleResult())
+				.retryWhen(new RetryWithDelay(3,1000));
 	}
 }

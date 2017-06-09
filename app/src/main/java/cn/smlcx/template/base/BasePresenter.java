@@ -17,7 +17,7 @@ public abstract class BasePresenter<M extends BaseModel,V extends BaseView> {
 
     private CompositeSubscription mCompositeSubscription;
 
-    protected void addSubscribe(Subscription subscription) {
+    public void addSubscribe(Subscription subscription) {
         if (mCompositeSubscription == null) {
             mCompositeSubscription = new CompositeSubscription();
         }

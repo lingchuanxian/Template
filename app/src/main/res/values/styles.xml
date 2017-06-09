@@ -10,4 +10,13 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="SmallGreyTextView">
+        <item name="android:textColor">#e0e0e0</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+
+    <style name="progress_dialog" parent="@android:style/Theme.Dialog">
+    </style>
+
 </resources>

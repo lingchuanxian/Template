@@ -1,7 +1,9 @@
 package cn.smlcx.template.ui.adapter;
 
 import android.support.annotation.Nullable;
+import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 
@@ -15,13 +17,14 @@ import cn.smlcx.template.bean.News;
  */
 
 public class NewsListAdapter extends BaseQuickAdapter<News,BaseViewHolder> {
-
 	public NewsListAdapter(@Nullable List data) {
 		super(R.layout.item_news, data);
 	}
 
 	@Override
 	protected void convert(BaseViewHolder helper, News item) {
-		helper.setText(R.id.tv_title, item.getTitle());
+		helper.setText(R.id.c_title,item.getTitle())
+			.setText(R.id.c_content,"来源:"+item.getSource());
+		Glide.with(mContext).load(item.getFirstImg()).crossFade().into((ImageView) helper.getView(R.id.c_img));
 	}
 }

@@ -29,11 +29,6 @@ public class SplashActivity extends BaseActivity {
 	}
 
 	@Override
-	protected void initPresenter() {
-
-	}
-
-	@Override
 	protected void initData() {
 		new Handler().postDelayed(new Runnable() {
 			@Override

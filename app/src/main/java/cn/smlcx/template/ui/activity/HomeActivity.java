@@ -42,10 +42,6 @@ public class HomeActivity extends BaseActivity<NewsListPresenter> implements Vie
 	}
 
 	@Override
-	protected void initPresenter() {
-	}
-
-	@Override
 	protected void initInject() {
 		DaggerNewsComponent.builder()
 				.newsModule(new NewsModule(this))
@@ -55,14 +51,12 @@ public class HomeActivity extends BaseActivity<NewsListPresenter> implements Vie
 
 	@Override
 	protected void initData() {
-		showLoding();
 		mPresenter.getNewsList(1, 50, "d975b5fe029c0691fe5d683cb68b86ac", "json");
 	}
 
 
 	@Override
 	public void success(List<?> list) {
-		hideLoding();
 		mDatas.addAll((List<News>)list);
 		mAdapter.notifyDataSetChanged();
 	}

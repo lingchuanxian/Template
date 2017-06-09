@@ -10,6 +10,7 @@ import cn.smlcx.template.mvp.model.NewsListModel;
 import cn.smlcx.template.mvp.view.ViewContract;
 import rx.Subscriber;
 import rx.Subscription;
+import rx.functions.Action0;
 
 /**
  * Created by lcx on 2017/6/6.
@@ -25,10 +26,16 @@ public class NewsListPresenter extends BasePresenter<NewsListModel,ViewContract.
 
 	public void getNewsList(int pno, int ps, String key, String dtype) {
 		subscribe = mModel.getNewsListModel(pno, ps, key, dtype)
+				.doOnSubscribe(new Action0() {
+					@Override
+					public void call() {
+						mView.showLoding();
+					}
+				})
 				.subscribe(new Subscriber<PageBean<News>>() {
 					@Override
 					public void onCompleted() {
-
+						mView.hideLoding();
 					}
 
 					@Override
