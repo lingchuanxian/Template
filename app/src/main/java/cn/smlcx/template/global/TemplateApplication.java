@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.squareup.leakcanary.LeakCanary;
 
+import cat.ereza.customactivityoncrash.CustomActivityOnCrash;
 import cn.smlcx.template.di.component.AppComponent;
 import cn.smlcx.template.di.component.DaggerAppComponent;
 import cn.smlcx.template.di.module.AppModule;
@@ -20,6 +21,7 @@ public class TemplateApplication extends Application {
 		instance = this;
 		LeakCanary.install(this);
 		getAppComponent();
+		CustomActivityOnCrash.install(this);
 	}
 
 	public static TemplateApplication getInstance() {
