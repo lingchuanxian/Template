@@ -3,15 +3,9 @@
       xmlns:app="http://schemas.android.com/apk/res-auto"
       xmlns:tools="http://schemas.android.com/tools">
 
-    <item android:id="@+id/action_create"
-          android:title="搜索"
-          android:icon="@android:drawable/ic_menu_search"
-          android:orderInCategory="80"
-          app:showAsAction="ifRoom" />
-
     <item android:id="@+id/action_add"
-          android:title="分享"
-          android:icon="@android:drawable/ic_menu_share"
+          android:title="退出"
+          android:icon="@mipmap/ans"
           android:orderInCategory="90"
           app:showAsAction="ifRoom" />
 </menu>

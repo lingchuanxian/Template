@@ -2,6 +2,7 @@ package cn.smlcx.template.base;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
@@ -9,14 +10,19 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.Toast;
+
+import java.lang.reflect.Field;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.smlcx.template.R;
+import cn.smlcx.template.global.TemplateApplication;
 import cn.smlcx.template.widget.EmptyLayout;
 import cn.smlcx.template.widget.ToolBarSet;
 
@@ -41,8 +47,10 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(attachLayoutRes());
+		initState();
 		ButterKnife.bind(this);
 		init();
+		TemplateApplication.getInstance().getActivityManager().pushActivity(this);
 	}
 
 	@Override
@@ -65,13 +73,6 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
 		initInject();
 		initViews();
 		initData();
-		/*//当系统版本为4.4或者4.4以上时可以使用沉浸式状态栏
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-			//透明状态栏
-			getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-			//透明导航栏
-			getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-		}*/
 	}
 
 	/**
@@ -192,6 +193,45 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
 		Toast.makeText(this,msg,Toast.LENGTH_SHORT).show();
 	}
 
+	/**
+	 * 动态的设置状态栏  实现沉浸式状态栏
+	 */
+	private void initState() {
+		//当系统版本为4.4或者4.4以上时可以使用沉浸式状态栏
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+			//透明状态栏
+			getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+			//透明导航栏
+			getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+			//
+			LinearLayout linear_bar = (LinearLayout) findViewById(R.id.status_bar_content);
+			linear_bar.setVisibility(View.VISIBLE);
+			//获取到状态栏的高度
+			int statusHeight = getStatusBarHeight();
+			//动态的设置隐藏布局的高度
+			LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) linear_bar.getLayoutParams();
+			params.height = statusHeight;
+			linear_bar.setLayoutParams(params);
+		}
+	}
+
+	/**
+	 * 通过反射的方式获取状态栏高度
+	 *
+	 * @return
+	 */
+	private int getStatusBarHeight() {
+		try {
+			Class<?> c = Class.forName("com.android.internal.R$dimen");
+			Object obj = c.newInstance();
+			Field field = c.getField("status_bar_height");
+			int x = Integer.parseInt(field.get(obj).toString());
+			return getResources().getDimensionPixelSize(x);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
 
 	@Override
 	protected void onPause() {
@@ -214,6 +254,7 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
 		if (mPresenter!=null){
 			mPresenter.unSubscribe();
 		}
+		TemplateApplication.getInstance().getActivityManager().popActivity(this);
 	}
 
 }

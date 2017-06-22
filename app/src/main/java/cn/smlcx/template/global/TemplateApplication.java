@@ -15,6 +15,7 @@ import cn.smlcx.template.di.module.AppModule;
 
 public class TemplateApplication extends Application {
 	private static TemplateApplication instance;
+	private ActivityManager activityManager = null; // activity管理类
 	@Override
 	public void onCreate() {
 		super.onCreate();
@@ -22,10 +23,15 @@ public class TemplateApplication extends Application {
 		LeakCanary.install(this);
 		getAppComponent();
 		CustomActivityOnCrash.install(this);
+		activityManager = ActivityManager.getInstance(); // 获得实例
 	}
 
 	public static TemplateApplication getInstance() {
 		return instance;
+	}
+
+	public ActivityManager getActivityManager() {
+		return activityManager;
 	}
 
 	// 初始化dagger2

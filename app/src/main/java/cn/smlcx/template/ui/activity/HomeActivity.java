@@ -1,13 +1,14 @@
 package cn.smlcx.template.ui.activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 
@@ -20,6 +21,7 @@ import cn.smlcx.template.base.BaseActivity;
 import cn.smlcx.template.bean.News;
 import cn.smlcx.template.di.component.DaggerNewsComponent;
 import cn.smlcx.template.di.module.NewsModule;
+import cn.smlcx.template.global.TemplateApplication;
 import cn.smlcx.template.mvp.presenter.NewsListPresenter;
 import cn.smlcx.template.mvp.view.ViewContract;
 import cn.smlcx.template.ui.adapter.NewsListAdapter;
@@ -36,6 +38,7 @@ public class HomeActivity extends BaseActivity<NewsListPresenter> implements Vie
 	SwipeRefreshLayout mSwiperefresh;
 	private NewsListAdapter mAdapter;
 	private List<News> mDatas = new ArrayList<News>();
+	private AlertDialog.Builder mBuilder;
 	@Override
 	protected int attachLayoutRes() {
 		return R.layout.activity_home;
@@ -48,17 +51,25 @@ public class HomeActivity extends BaseActivity<NewsListPresenter> implements Vie
 				.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
 					@Override
 					public boolean onMenuItemClick(MenuItem item) {
-						String msg = "";
 						switch (item.getItemId()) {
-							case R.id.action_create:
-								msg += "Click create";
-								break;
 							case R.id.action_add:
-								msg += "Click add";
+								mBuilder = new AlertDialog.Builder(mContext)
+										.setCancelable(false)
+										.setTitle("退出")
+										.setMessage("您确定要退出吗？")
+										.setPositiveButton("确定",new DialogInterface.OnClickListener(){
+											@Override
+											public void onClick(DialogInterface dialog, int which) {
+												TemplateApplication.getInstance().getActivityManager().finishAllActivity();
+											}
+										}).setNegativeButton("取消",new DialogInterface.OnClickListener(){
+											@Override
+											public void onClick(DialogInterface dialog, int which) {
+												dialog.dismiss();
+											}
+										});
+								mBuilder.show();
 								break;
-						}
-						if(!msg.equals("")) {
-							Toast.makeText(HomeActivity.this, msg, Toast.LENGTH_SHORT).show();
 						}
 						return false;
 					}
