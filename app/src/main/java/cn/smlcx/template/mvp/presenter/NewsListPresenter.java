@@ -24,12 +24,14 @@ public class NewsListPresenter extends BasePresenter<NewsListModel,ViewContract.
 		this.mView = view;
 	}
 
-	public void getNewsList(int pno, int ps, String key, String dtype) {
-		subscribe = mModel.getNewsListModel(pno, ps, key, dtype)
+	public void getNewsList(int pno, final boolean isFirst) {
+		subscribe = mModel.getNewsListModel(pno,6, "d975b5fe029c0691fe5d683cb68b86ac", "json")
 				.doOnSubscribe(new Action0() {
 					@Override
 					public void call() {
-						mView.showLoding();
+						if(isFirst){
+							mView.showLoding();
+						}
 					}
 				})
 				.subscribe(new Subscriber<PageBean<News>>() {
@@ -45,7 +47,7 @@ public class NewsListPresenter extends BasePresenter<NewsListModel,ViewContract.
 
 					@Override
 					public void onNext(PageBean<News> result) {
-						mView.success(result.getList());
+						mView.success(result.getTotalPage(),result.getList());
 					}
 				});
 		addSubscribe(subscribe);

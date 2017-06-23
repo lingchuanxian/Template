@@ -30,7 +30,7 @@ import cn.smlcx.template.ui.adapter.NewsListAdapter;
  * Created by lcx on 2017/6/5.
  */
 
-public class HomeActivity extends BaseActivity<NewsListPresenter> implements ViewContract.NewsListView {
+public class HomeActivity extends BaseActivity<NewsListPresenter> implements ViewContract.NewsListView{
 	protected final String TAG = this.getClass().getSimpleName();
 	@BindView(R.id.rlv_news)
 	RecyclerView mRlvNews;
@@ -39,6 +39,9 @@ public class HomeActivity extends BaseActivity<NewsListPresenter> implements Vie
 	private NewsListAdapter mAdapter;
 	private List<News> mDatas = new ArrayList<News>();
 	private AlertDialog.Builder mBuilder;
+	private int mCurrentPage = 1;//当前页码
+	private int mTotalPage;//总页码
+	private int flag = 0;//0 -- 第一次加载或者刷新  1 -- 加载更多
 	@Override
 	protected int attachLayoutRes() {
 		return R.layout.activity_home;
@@ -46,6 +49,7 @@ public class HomeActivity extends BaseActivity<NewsListPresenter> implements Vie
 
 	@Override
 	protected void initViews() {
+		/* 设置toolBar */
 		getToolBar().setTitle("微信精选")
 				.setDisplayHomeAsUpEnabled(false)
 				.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
@@ -76,6 +80,7 @@ public class HomeActivity extends BaseActivity<NewsListPresenter> implements Vie
 				});
 		mAdapter = new NewsListAdapter(mDatas);
 		mRlvNews.setAdapter(mAdapter);
+		/* item点击事件 */
 		mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
 			@Override
 			public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
@@ -83,6 +88,27 @@ public class HomeActivity extends BaseActivity<NewsListPresenter> implements Vie
 				intent.putExtra("url",mDatas.get(position).getUrl());
 				intent.putExtra("title",mDatas.get(position).getTitle());
 				startActivity(intent);
+			}
+		});
+		/* 刷新操作 */
+		mSwiperefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+			@Override
+			public void onRefresh() {
+				flag = 0;
+				mCurrentPage = 1;
+				mPresenter.getNewsList(mCurrentPage, false);
+			}
+		});
+		/* 加载更多 */
+		mAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
+			@Override public void onLoadMoreRequested() {
+				if (mCurrentPage >= mTotalPage) {//数据全部加载完毕
+					mAdapter.loadMoreEnd();
+				} else {//数据未加载完，继续请求加载
+					flag = 1;
+					mCurrentPage += 1;
+					mPresenter.getNewsList(mCurrentPage,false);
+				}
 			}
 		});
 	}
@@ -97,14 +123,24 @@ public class HomeActivity extends BaseActivity<NewsListPresenter> implements Vie
 
 	@Override
 	protected void initData() {
-		mPresenter.getNewsList(1, 50, "d975b5fe029c0691fe5d683cb68b86ac", "json");
+		mPresenter.getNewsList(mCurrentPage, true);
 	}
 
-
 	@Override
-	public void success(List<?> list) {
-		mDatas.addAll((List<News>)list);
-		mAdapter.notifyDataSetChanged();
+	public void success(int totalPage,List<?> list) {
+		//获取页码
+		mTotalPage = totalPage;
+		if(flag == 0){//第一次加载或者刷新
+			mDatas.clear();
+			if(list.size() == 0){
+				showNonData("当前暂无数据。");
+				return;
+			}
+			mSwiperefresh.setRefreshing(false);
+		}else if(flag == 1){//加载更多
+			mAdapter.loadMoreComplete();
+		}
+		mAdapter.addData((List<News>)list);
 	}
 
 	@Override
@@ -117,5 +153,14 @@ public class HomeActivity extends BaseActivity<NewsListPresenter> implements Vie
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.menu_main,menu);
 		return true;
+	}
+
+	/* 按返回键后台运行程序 */
+	@Override
+	public void onBackPressed() {
+		Intent intent = new Intent(Intent.ACTION_MAIN);
+		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		intent.addCategory(Intent.CATEGORY_HOME);
+		startActivity(intent);
 	}
 }

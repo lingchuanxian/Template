@@ -10,7 +10,7 @@ import cn.smlcx.template.base.BaseView;
 
 public interface ViewContract {
 	interface NewsListView extends BaseView {
-		void success(List<?> list);
+		void success(int totlaPage,List<?> list);
 		void fail(String msg);
 	}
 }
