@@ -1,15 +1,16 @@
 package cn.smlcx.template.ui.activity;
 
-import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 
 import java.util.ArrayList;
@@ -38,7 +39,6 @@ public class HomeActivity extends BaseActivity<NewsListPresenter> implements Vie
 	SwipeRefreshLayout mSwiperefresh;
 	private NewsListAdapter mAdapter;
 	private List<News> mDatas = new ArrayList<News>();
-	private AlertDialog.Builder mBuilder;
 	private int mCurrentPage = 1;//当前页码
 	private int mTotalPage;//总页码
 	private int flag = 0;//0 -- 第一次加载或者刷新  1 -- 加载更多
@@ -57,22 +57,25 @@ public class HomeActivity extends BaseActivity<NewsListPresenter> implements Vie
 					public boolean onMenuItemClick(MenuItem item) {
 						switch (item.getItemId()) {
 							case R.id.action_add:
-								mBuilder = new AlertDialog.Builder(mContext)
-										.setCancelable(false)
-										.setTitle("退出")
-										.setMessage("您确定要退出吗？")
-										.setPositiveButton("确定",new DialogInterface.OnClickListener(){
+								new MaterialDialog.Builder(mContext)
+										.title("退出")
+										.content("您确定要退出吗？")
+										.positiveText("确定")
+										.onPositive(new MaterialDialog.SingleButtonCallback() {
 											@Override
-											public void onClick(DialogInterface dialog, int which) {
+											public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
 												TemplateApplication.getInstance().getActivityManager().finishAllActivity();
 											}
-										}).setNegativeButton("取消",new DialogInterface.OnClickListener(){
+										})
+										.negativeText("取消")
+										.onNegative(new MaterialDialog.SingleButtonCallback() {
 											@Override
-											public void onClick(DialogInterface dialog, int which) {
+											public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
 												dialog.dismiss();
 											}
-										});
-								mBuilder.show();
+										})
+										.cancelable(false)
+										.show();
 								break;
 						}
 						return false;

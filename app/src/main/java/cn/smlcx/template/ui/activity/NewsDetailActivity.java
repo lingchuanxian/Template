@@ -42,7 +42,7 @@ public class NewsDetailActivity extends BaseActivity {
 						}
 						return false;
 					}
-				});;
+				});
 	}
 
 	@Override
