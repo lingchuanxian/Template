@@ -8,6 +8,7 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 /**
  * Created by lcx on 2017/6/7.
@@ -31,7 +32,6 @@ public class ApiEngine {
 		OkHttpClient client = new OkHttpClient.Builder()
 				.connectTimeout(12, TimeUnit.SECONDS)
 				.writeTimeout(12, TimeUnit.SECONDS)
-				.writeTimeout(12, TimeUnit.SECONDS)
 				//.addNetworkInterceptor(new NetworkInterceptor())
 				.addInterceptor(loggingInterceptor)
 				//.cache(cache)
@@ -40,7 +40,11 @@ public class ApiEngine {
 		retrofit = new Retrofit.Builder()
 				.baseUrl(Contants.IP)
 				.client(client)
+				//增加返回值为String的支持
+				.addConverterFactory(ScalarsConverterFactory.create())
+				//增加返回值为Gson的支持(以实体类返回)
 				.addConverterFactory(GsonConverterFactory.create())
+				//增加返回值为Oservable<T>的支持
 				.addCallAdapterFactory(RxJavaCallAdapterFactory.create())
 				.build();
 

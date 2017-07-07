@@ -105,13 +105,18 @@ public class HomeActivity extends BaseActivity<NewsListPresenter> implements Vie
 		/* 加载更多 */
 		mAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
 			@Override public void onLoadMoreRequested() {
-				if (mCurrentPage >= mTotalPage) {//数据全部加载完毕
-					mAdapter.loadMoreEnd();
-				} else {//数据未加载完，继续请求加载
-					flag = 1;
-					mCurrentPage += 1;
-					mPresenter.getNewsList(mCurrentPage,false);
-				}
+				mRlvNews.postDelayed(new Runnable() {
+					@Override
+					public void run() {
+						if (mCurrentPage >= mTotalPage) {//数据全部加载完毕
+							mAdapter.loadMoreEnd();
+						} else {//数据未加载完，继续请求加载
+							flag = 1;
+							mCurrentPage += 1;
+							mPresenter.getNewsList(mCurrentPage,false);
+						}
+					}
+				}, 1000);
 			}
 		});
 	}

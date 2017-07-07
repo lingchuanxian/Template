@@ -25,7 +25,7 @@ public class NewsListPresenter extends BasePresenter<NewsListModel,ViewContract.
 	}
 
 	public void getNewsList(int pno, final boolean isFirst) {
-		subscribe = mModel.getNewsListModel(pno,6, "d975b5fe029c0691fe5d683cb68b86ac", "json")
+		subscribe = mModel.getNewsListModel(pno,2, "d975b5fe029c0691fe5d683cb68b86ac", "json")
 				.doOnSubscribe(new Action0() {
 					@Override
 					public void call() {
